@@ -1,0 +1,20 @@
+{
+  "name": "xlerr/yii2-widget-adminlte-skin",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "xlerr",
+      "email": "xlerr@qq.com"
+    }
+  ],
+  "require": {
+    "dmstr/yii2-adminlte-asset": "~2.6",
+    "kartik-v/yii2-widgets": "^3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "xlerr\\common\\": "src/"
+    }
+  }
+}
