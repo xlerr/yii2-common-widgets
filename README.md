@@ -1,1 +1,1 @@
-# yii2-widget-adminlte-skin
+# yii2-common-widgets
