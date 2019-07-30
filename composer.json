@@ -10,7 +10,8 @@
   ],
   "require": {
     "dmstr/yii2-adminlte-asset": "~2.6",
-    "kartik-v/yii2-widgets": "^3.4"
+    "kartik-v/yii2-widgets": "^3.4",
+    "kartik-v/yii2-number": "@dev"
   },
   "autoload": {
     "psr-4": {
