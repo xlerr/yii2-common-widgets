@@ -10,7 +10,7 @@ class MoneyHelper
     const DEP_SYMBOL = '.';                 //小数点符号
 
     /**
-     * @param $amount
+     * @param float|int $amount
      *
      * @return int
      */
@@ -20,7 +20,7 @@ class MoneyHelper
     }
 
     /**
-     * @param      $amount
+     * @param int  $amount
      * @param bool $format
      *
      * @return float|string

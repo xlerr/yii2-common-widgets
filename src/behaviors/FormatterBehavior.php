@@ -13,8 +13,34 @@ use yii\base\Behavior;
  */
 class FormatterBehavior extends Behavior
 {
-    public function asF2y($value, $format = false)
+    /**
+     * @param int  $amount
+     * @param bool $format
+     *
+     * @return float|string
+     */
+    public function asF2y($amount, $format = false)
     {
-        return MoneyHelper::f2y($value, $format);
+        return MoneyHelper::f2y($amount, $format);
+    }
+
+    /**
+     * @param float|int $amount
+     *
+     * @return int
+     */
+    public function asY2f($amount)
+    {
+        return MoneyHelper::y2f($amount);
+    }
+
+    /**
+     * @param float|int $amount
+     *
+     * @return string
+     */
+    public function asChineseAmount($amount)
+    {
+        return MoneyHelper::chineseAmount($amount);
     }
 }
