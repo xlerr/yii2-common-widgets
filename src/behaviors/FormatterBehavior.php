@@ -43,4 +43,20 @@ class FormatterBehavior extends Behavior
     {
         return MoneyHelper::chineseAmount($amount);
     }
+
+    /**
+     * @param mixed $value
+     * @param array $range
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function asIn($value, array $range = [], $default = null)
+    {
+        if (null === $default) {
+            $default = $value;
+        }
+
+        return isset($range[$value]) ? $range[$value] : $default;
+    }
 }
