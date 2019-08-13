@@ -52,9 +52,11 @@
 
 ![amount_input](./amount_input.png)
 
+`amount`字段值单位为分, 文本框内值的单位为元
+
 ```php
 $form->field($model, 'amount')->widget(\xlerr\common\widgets\MoneyInput::class, [
-    'displayOptions' => [
+    'options' => [
         'placeholder' => '金额输入框',
     ],
 ]);
@@ -65,7 +67,7 @@ or
 ```php
 \xlerr\common\widgets\MoneyInput::widget([
     'name' => 'amount',
-    'displayOptions' => [
+    'options' => [
         'placeholder' => '金额输入框',
     ],
 ]);
