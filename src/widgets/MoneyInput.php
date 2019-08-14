@@ -2,7 +2,6 @@
 
 namespace xlerr\common\widgets;
 
-use xlerr\common\helpers\MoneyHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -37,13 +36,11 @@ class MoneyInput extends MaskedInput
 
         if ($this->hasModel()) {
             $reliable = Html::activeInput($type, $this->model, $this->attribute, $options);
-            $value    = $this->model->{$this->attribute};
         } else {
             $reliable = Html::input($type, $this->name, $this->value, $options);
-            $value    = $this->value;
         }
 
-        return $reliable . Html::input($type, null, MoneyHelper::f2y($value), $this->options);
+        return $reliable . Html::input($type, null, null, $this->options);
     }
 
     public function registerClientScript()
@@ -61,17 +58,25 @@ class MoneyInput extends MaskedInput
         if (is_array($this->aliases) && !empty($this->aliases)) {
             $js .= ucfirst(self::PLUGIN_NAME) . '.extendAliases(' . Json::htmlEncode($this->aliases) . ');';
         }
-        $id = $this->options['id'];
-        $js .= 'jQuery("#' . $id . '-eldisp").' . self::PLUGIN_NAME . '(' . $this->_hashVar . ');';
-        $js .= 'jQuery("#' . $id . '-eldisp").val(jQuery("#' . $id . '").val() / 100).on(\'change blur keypress keydown\', function (e) {
-            var event = e.type, key = e.keyCode || e.which, enterKeyPressed = key && parseInt(key) === 13;
-            if (event === \'keypress\' && !enterKeyPressed) {
-                return;
-            }
-            if (event !== \'keydown\' || enterKeyPressed) {
-                jQuery("#' . $id . '").val($(this).inputmask(\'unmaskedvalue\') * 100).trigger(\'change\');
-            }        
-        })';
+        $id         = $this->options['id'];
+        $pluginName = self::PLUGIN_NAME;
+        $js         .= <<<EOF
+(function () {
+    let eld = $('#{$id}-eldisp');
+    let el = $('#{$id}');
+    eld.{$pluginName}({$this->_hashVar});
+    eld.val(el.val() / 100);
+    eld.on('change blur keypress keydown', function (e) {
+        let event = e.type, key = e.keyCode || e.which, enterKeyPressed = key && parseInt(key) === 13;
+        if (event === 'keypress' && !enterKeyPressed) {
+            return;
+        }
+        if (event !== 'keydown' || enterKeyPressed) {
+            el.val(eld.{$pluginName}('unmaskedvalue') * 100).trigger('change');
+        }
+    });
+})();
+EOF;
         MaskedInputAsset::register($view);
         $view->registerJs($js);
     }
