@@ -21,6 +21,15 @@ class MoneyInput extends MaskedInput
         'enforceDigitsOnBlur' => true,
     ];
 
+    /**
+     * @internal
+     */
+    public function run()
+    {
+        $this->registerClientScript();
+        echo $this->renderInputHtml($this->type);
+    }
+
     protected function renderInputHtml($type)
     {
         $id = ArrayHelper::remove($this->options, 'id');
