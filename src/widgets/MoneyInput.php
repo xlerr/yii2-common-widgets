@@ -9,27 +9,32 @@ use yii\widgets\MaskedInputAsset;
 
 class MoneyInput extends MaskedInput
 {
-    public $clientOptions = [
-        'alias' => 'money',
-    ];
-
     public function init()
     {
-        parent::init();
+        $this->aliases = array_merge((array)$this->aliases, [
+            'iY2Y' => [
+                'alias'               => 'numeric',
+                'digits'              => 2,
+                'groupSeparator'      => ',',
+                'radixPoint'          => '.',
+                'autoGroup'           => true,
+                'autoUnmask'          => true,
+                'rightAlign'          => false,
+                'enforceDigitsOnBlur' => true,
+                'removeMaskOnSubmit'  => true,
+            ],
+            'iY2F' => [
+                'alias'        => 'iY2Y',
+                'onBeforeMask' => new JsExpression('function (v) { v = Number(v); return (isNaN(v) ? 0 : v / 100).toFixed(2) }'),
+                'onUnMask'     => new JsExpression('function(v) { return (Number(v.replace(/,/g, \'\')) * 100).toFixed(0) }'),
+            ],
+        ]);
 
-        $this->aliases['money'] = [
-            'alias'               => 'numeric',
-            'digits'              => 2,
-            'groupSeparator'      => ',',
-            'radixPoint'          => '.',
-            'autoGroup'           => true,
-            'autoUnmask'          => true,
-            'rightAlign'          => false,
-            'enforceDigitsOnBlur' => true,
-            'removeMaskOnSubmit'  => true,
-            'onBeforeMask'        => new JsExpression('function (v) { v = Number(v); return (isNaN(v) ? 0 : v / 100).toFixed(2) }'),
-            'onUnMask'            => new JsExpression('function(v) { return (Number(v.replace(/,/g, \'\')) * 100).toFixed(0) }'),
+        $this->clientOptions += [
+            'alias' => 'iY2F',
         ];
+
+        parent::init();
     }
 
     public function registerClientScript()
@@ -41,8 +46,6 @@ class MoneyInput extends MaskedInput
 
         $view = $this->getView();
         MaskedInputAsset::register($view);
-
-        $this->hashPluginOptions($view);
 
         if (is_array($this->definitions) && !empty($this->definitions)) {
             $view->registerJs(vsprintf('%s.extendDefinitions(%s);', [
@@ -57,6 +60,8 @@ class MoneyInput extends MaskedInput
                 Json::htmlEncode($this->aliases),
             ]));
         }
+
+        $this->hashPluginOptions($view);
 
         $view->registerJs(vsprintf('jQuery("#%s").%s(%s);', [
             $this->options['id'],
