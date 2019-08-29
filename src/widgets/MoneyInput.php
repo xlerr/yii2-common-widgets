@@ -25,7 +25,7 @@ class MoneyInput extends MaskedInput
             ],
             'iY2F' => [
                 'alias'        => 'iY2Y',
-                'onBeforeMask' => new JsExpression('function (v) { v = Number(v); return (isNaN(v) ? 0 : v / 100).toFixed(2) }'),
+                'onBeforeMask' => new JsExpression('function (v) { v = Number(v.replace(/,|\./g, \'\')); return (isNaN(v) ? 0 : v / 100).toFixed(2) }'),
                 'onUnMask'     => new JsExpression('function(v) { return (Number(v.replace(/,/g, \'\')) * 100).toFixed(0) }'),
             ],
         ]);
