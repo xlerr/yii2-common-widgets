@@ -2,7 +2,9 @@
 
 namespace xlerr\common\widgets;
 
-use xlerr\common\assets\DataTableFixedColumnsAsset;
+use xlerr\common\assets\DataTableBootstrapAsset;
+use xlerr\common\assets\DataTableBootstrapFixedColumnsAsset;
+use xlerr\common\assets\DataTableBootstrapFixedHeaderAsset;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 
@@ -41,6 +43,10 @@ class DataTable extends \yii\grid\GridView
     public function init()
     {
         $this->dataTableOptions = array_merge([
+            //            'fixedHeader' => [
+            //                'header' => true,
+            //                'footer' => true,
+            //            ],
             'paginate'  => false,
             'ordering'  => false,
             'searching' => false,
@@ -58,7 +64,9 @@ class DataTable extends \yii\grid\GridView
 
         $view = $this->getView();
 
-        DataTableFixedColumnsAsset::register($view);
+        DataTableBootstrapAsset::register($view);
+        DataTableBootstrapFixedHeaderAsset::register($view);
+        DataTableBootstrapFixedColumnsAsset::register($view);
 
         $options = Json::htmlEncode($this->dataTableOptions);
 

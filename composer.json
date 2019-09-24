@@ -1,5 +1,6 @@
 {
     "name": "xlerr/yii2-common-widgets",
+    "version": "1.5.1",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,8 +10,8 @@
         }
     ],
     "require": {
-        "bower-asset/datatables": "^1.10",
-        "bower-asset/datatables-fixedcolumns": "^3.2",
+        "bower-asset/datatables.net-fixedcolumns-bs": "^3.2",
+        "bower-asset/datatables.net-fixedheader-bs": "^3.1",
         "dmstr/yii2-adminlte-asset": "~2.6",
         "kartik-v/yii2-widgets": "^3.4",
         "yiisoft/yii2": "^2.0"
