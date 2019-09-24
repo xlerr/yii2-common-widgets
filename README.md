@@ -1,6 +1,30 @@
 公共小部件和辅助类
 ===========
 
+## 数据表格
+
+基于[DataTables](https://datatables.net)
+
+### 固定表头
+
+```php
+echo \xlerr\common\widgets\DataTable::widget([
+    'dataTableOptions' => [
+        'fixedColumns' => [
+            'leftColumns'  => 2,
+            'rightColumns' => 1,
+        ],
+        'scrollY' => '300px', // 表格高度控制, 默认为: false
+    ],
+    'dataTableEvents'  => [
+        'init.dt' => 'function () { console.log(\'init\'); }',
+    ],
+    'dataProvider' => new \yii\data\ArrayDataProvider([
+        'allModels' => [],
+    ]),
+    'columns' => [],
+]);
+```
 
 ## 自定义格式化方法
 
