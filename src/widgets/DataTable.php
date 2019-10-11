@@ -87,7 +87,7 @@ class DataTable extends \yii\grid\GridView
     public function registerHoverStyle($id)
     {
         $hoverScript = <<<JAVASCRIPT
-const dataTableBody = $('#{$id} table.dataTable > tbody');
+const dataTableBody{$id} = $('#{$id} table.dataTable > tbody');
 dataTableBody.each(function () {
     $(this).children('tr').hover(function () {
         const index = $(this).index();
