@@ -16,7 +16,7 @@ use yii\web\JsExpression;
 class DataTable extends \yii\grid\GridView
 {
     public $tableOptions = [
-        'class' => 'table table-striped',
+        'class' => 'table table-hover table-striped',
         'style' => 'width: 100%',
     ];
 
@@ -81,5 +81,32 @@ class DataTable extends \yii\grid\GridView
         }
 
         $view->registerJs("jQuery('#$id table')$events\n.dataTable($options);");
+        $this->registerHoverStyle($id);
+    }
+
+    public function registerHoverStyle($id)
+    {
+        $hoverScript = <<<JAVASCRIPT
+const dataTableBody = $('#{$id} table.dataTable > tbody');
+dataTableBody.each(function () {
+    $(this).children('tr').hover(function () {
+        const index = $(this).index();
+        dataTableBody.each(function () {
+            $(this).children('tr:eq(' + index + ')').css({
+                'background-color': '#f5f5f5',
+            });
+        });
+    }, function () {
+        const index = $(this).index();
+        dataTableBody.each(function () {
+            const target = $(this).children('tr:eq(' + index + ')');
+            target.css({
+                'background-color': target.hasClass('odd') ? '#f9f9f9' : 'white',
+            });
+        });
+    });
+});
+JAVASCRIPT;
+        $this->getView()->registerJs($hoverScript);
     }
 }
