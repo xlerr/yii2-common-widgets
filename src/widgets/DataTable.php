@@ -88,17 +88,17 @@ class DataTable extends \yii\grid\GridView
     {
         $hoverScript = <<<JAVASCRIPT
 const dataTableBody{$id} = $('#{$id} table.dataTable > tbody');
-dataTableBody.each(function () {
+dataTableBody{$id}.each(function () {
     $(this).children('tr').hover(function () {
         const index = $(this).index();
-        dataTableBody.each(function () {
+        dataTableBody{$id}.each(function () {
             $(this).children('tr:eq(' + index + ')').css({
                 'background-color': '#f5f5f5',
             });
         });
     }, function () {
         const index = $(this).index();
-        dataTableBody.each(function () {
+        dataTableBody{$id}.each(function () {
             const target = $(this).children('tr:eq(' + index + ')');
             target.css({
                 'background-color': target.hasClass('odd') ? '#f9f9f9' : 'white',
