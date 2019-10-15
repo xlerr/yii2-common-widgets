@@ -80,7 +80,7 @@ class DataTable extends \yii\grid\GridView
             ]);
         }
 
-        $view->registerJs("jQuery('#$id table')$events\n.dataTable($options);");
+        $view->registerJs("try{ jQuery('#$id table')$events\n.dataTable($options); } catch(e) { console.warn(e); }");
         $this->registerHoverStyle($id);
     }
 
