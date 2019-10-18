@@ -5,6 +5,7 @@ namespace xlerr\common\widgets;
 use xlerr\common\assets\DataTableBootstrapAsset;
 use xlerr\common\assets\DataTableBootstrapFixedColumnsAsset;
 use xlerr\common\assets\DataTableBootstrapFixedHeaderAsset;
+use xlerr\common\assets\LayerAsset;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 
@@ -64,6 +65,7 @@ class DataTable extends \yii\grid\GridView
 
         $view = $this->getView();
 
+        LayerAsset::register($view);
         DataTableBootstrapAsset::register($view);
         DataTableBootstrapFixedHeaderAsset::register($view);
         DataTableBootstrapFixedColumnsAsset::register($view);

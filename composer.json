@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "bower-asset/layer": "^3.1",
         "bower-asset/datatables.net-fixedcolumns-bs": "^3.2",
         "bower-asset/datatables.net-fixedheader-bs": "^3.1",
         "dmstr/yii2-adminlte-asset": "~2.6",
