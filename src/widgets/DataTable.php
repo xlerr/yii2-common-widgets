@@ -89,7 +89,31 @@ class DataTable extends \yii\grid\GridView
         $hoverScript = <<<JAVASCRIPT
 const dataTableBody{$id} = $('#{$id} table.dataTable > tbody');
 dataTableBody{$id}.each(function () {
-    $(this).children('tr').hover(function () {
+    $(this).children('tr').dblclick(function () {
+        let trText = [];
+        $(this).find('td').each(function () {
+            trText.push($(this).text());
+        });
+        const content = trText.join('\t').replace(/^\s+|\s+$/, ''),
+            input = $('<input>', {value: content});
+        input.appendTo('body').select();
+        document.execCommand('copy');
+        input.remove();
+        layer.msg('已复制一行数据!', {time: 1000});
+    }).click(function () {
+        return;
+        const self = $(this),
+            index = self.index();
+        if (self.hasClass('bg-gray')) {
+            dataTableBody{$id}.each(function () {
+                $(this).children('tr:eq(' + index + ')').removeClass('bg-gray');
+            });
+        } else {
+            dataTableBody{$id}.each(function () {
+                $(this).children('tr:eq(' + index + ')').addClass('bg-gray');
+            });
+        }
+    }).hover(function () {
         const index = $(this).index();
         dataTableBody{$id}.each(function () {
             $(this).children('tr:eq(' + index + ')').css({
