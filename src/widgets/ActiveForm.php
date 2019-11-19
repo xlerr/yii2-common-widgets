@@ -4,7 +4,7 @@ namespace xlerr\common\widgets;
 
 class ActiveForm extends \kartik\widgets\ActiveForm
 {
-    public $submitWaiting = false;
+    public $submitWaiting = true;
     public $waitingPrompt = '<i class="fa fa-spin fa-spinner"></i> 处理中...';
 
     public function registerAssets()
