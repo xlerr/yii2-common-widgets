@@ -96,3 +96,15 @@ or
     ],
 ]);
 ```
+
+### 表单
+
+提交表单等待效果
+
+![submit_waiting](./submit_waiting.png)
+
+```php
+echo \xlerr\common\widgets\ActiveForm::begin([
+    'submitWaiting' => true,
+]);
+```
