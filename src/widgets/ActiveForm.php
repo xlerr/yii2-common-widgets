@@ -24,9 +24,12 @@ jQuery('#$id').on('beforeValidate', function (e) {
         submitBtn.attr('_old_html', submitBtn.html()).html('$prompt').attr('disabled', true);
     }
 }).on('afterValidate', function (e, err) {
-    if (!$.isEmptyObject(err)) {
-        const submitBtn = $(this).find('[type=submit]');
-        submitBtn && submitBtn.html(submitBtn.attr('_old_html')).removeAttr('disabled');
+    for (k in err) {
+        if (!$.isEmptyObject(err[k])) {
+            const submitBtn = $(this).find('[type=submit]');
+            submitBtn && submitBtn.html(submitBtn.attr('_old_html')).removeAttr('disabled');
+            break;
+        }
     }
 });
 JAVASCRIPT;
