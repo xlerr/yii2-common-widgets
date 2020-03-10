@@ -14,6 +14,7 @@
         "bower-asset/datatables.net-fixedheader-bs": "^3.1",
         "dmstr/yii2-adminlte-asset": "~2.6",
         "kartik-v/yii2-widgets": "^3.4",
+        "kartik-v/yii2-date-range": "^1.7",
         "yiisoft/yii2": "^2.0"
     },
     "autoload": {
