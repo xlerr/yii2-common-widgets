@@ -3,6 +3,7 @@
 namespace xlerr\common\assets;
 
 use yii\web\AssetBundle;
+use yii\web\JqueryAsset;
 
 class LayerAsset extends AssetBundle
 {
@@ -14,5 +15,9 @@ class LayerAsset extends AssetBundle
 
     public $js = [
         'layer.js',
+    ];
+
+    public $depends = [
+        JqueryAsset::class,
     ];
 }
