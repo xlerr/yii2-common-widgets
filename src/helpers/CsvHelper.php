@@ -210,15 +210,23 @@ class CsvHelper extends BaseObject
      */
     protected function createDataColumnObject($config = [])
     {
-        if (array_key_exists('class', $config)) {
-            unset($config['class']);
-        }
-        return new class($config) extends DataColumn
+        $class = $config['class'] ?? null;
+        unset($config['class']);
+
+        $column = new class($config) extends DataColumn
         {
             public function renderDataCell($model, $key, $index)
             {
                 return $this->renderDataCellContent($model, $key, $index);
             }
         };
+
+        if ($class && class_exists($class)) {
+            $distColumn = new $class($config);
+
+            $column->format = $distColumn->format;
+        }
+
+        return $column;
     }
 }
