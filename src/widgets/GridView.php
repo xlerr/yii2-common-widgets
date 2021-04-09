@@ -5,7 +5,7 @@ namespace xlerr\common\widgets;
 class GridView extends \yii\grid\GridView
 {
     public $tableOptions = [
-        'class' => 'table table-hover',
+        'class' => 'table table-hover table-striped',
     ];
 
     public $options = [
