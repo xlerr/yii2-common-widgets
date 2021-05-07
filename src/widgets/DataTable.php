@@ -2,11 +2,10 @@
 
 namespace xlerr\common\widgets;
 
-use xlerr\common\assets\DataTableBootstrapAsset;
-use xlerr\common\assets\DataTableBootstrapFixedColumnsAsset;
-use xlerr\common\assets\DataTableBootstrapFixedHeaderAsset;
+use xlerr\common\assets\DataTableAsset;
 use xlerr\common\assets\LayerAsset;
 use yii\helpers\Json;
+use yii\web\JqueryAsset;
 use yii\web\JsExpression;
 
 /**
@@ -65,10 +64,9 @@ class DataTable extends \yii\grid\GridView
 
         $view = $this->getView();
 
+        JqueryAsset::register($view);
         LayerAsset::register($view);
-        DataTableBootstrapAsset::register($view);
-        DataTableBootstrapFixedHeaderAsset::register($view);
-        DataTableBootstrapFixedColumnsAsset::register($view);
+        DataTableAsset::register($view);
 
         $options = Json::htmlEncode($this->dataTableOptions);
 
@@ -82,7 +80,7 @@ class DataTable extends \yii\grid\GridView
             ]);
         }
 
-        $view->registerJs("try{ jQuery('#$id table')$events\n.dataTable($options); } catch(e) { console.warn(e); }");
+        $view->registerJs("try{ jQuery('#$id table')$events\n.DataTable($options); } catch(e) { console.warn(e); }");
         $this->registerHoverStyle($id);
     }
 

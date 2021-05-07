@@ -7,14 +7,12 @@ use yii\web\JqueryAsset;
 
 class LayerAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/layer/dist';
-
     public $css = [
-        'theme/default/layer.css',
+        'https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/theme/default/layer.min.css',
     ];
 
     public $js = [
-        'layer.js',
+        'https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/layer.min.js',
     ];
 
     public $depends = [
