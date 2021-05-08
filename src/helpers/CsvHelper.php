@@ -2,12 +2,15 @@
 
 namespace xlerr\common\helpers;
 
+use Closure;
+use Exception;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\db\QueryInterface;
 use yii\grid\DataColumn;
 use yii\i18n\Formatter;
 
@@ -28,12 +31,12 @@ class CsvHelper extends BaseObject
     /**
      * 渲染表格
      *
-     * @param array|yii\db\Query|\yii\db\QueryInterface|ActiveDataProvider $source 数据源
-     * @param array                                                        $columns
-     * @param callable|null                                                $getter
+     * @param array|Query|QueryInterface|ActiveDataProvider $source 数据源
+     * @param array                                         $columns
+     * @param callable|null                                 $getter
      *
      * @return resource
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @example CsvHelper::build($query, [
      *           [
      *               'label' => 'column 1',
@@ -75,9 +78,9 @@ class CsvHelper extends BaseObject
     /**
      * @param $source
      *
-     * @return \Closure
+     * @return Closure
      */
-    public static function getter(&$source)
+    public static function getter(&$source): Closure
     {
         if (is_array($source)) {
             return function ($source) {
@@ -88,7 +91,6 @@ class CsvHelper extends BaseObject
         }
 
         if ($source instanceof ActiveDataProvider) {
-            /** @var ActiveDataProvider $source */
             $sort   = $source->getSort();
             $source = $source->query;
             if ($sort !== false) {
@@ -108,7 +110,7 @@ class CsvHelper extends BaseObject
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -121,7 +123,8 @@ class CsvHelper extends BaseObject
             $this->formatter = Yii::createObject($this->formatter);
         }
         if (!$this->formatter instanceof Formatter) {
-            throw new InvalidConfigException('The "formatter" property must be either a Format object or a configuration array.');
+            throw new InvalidConfigException('The "formatter" property must be either a' .
+                ' Format object or a configuration array.');
         }
 
         $this->initColumns();
@@ -162,7 +165,7 @@ class CsvHelper extends BaseObject
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function initColumns()
     {
@@ -186,34 +189,35 @@ class CsvHelper extends BaseObject
     /**
      * @param $text
      *
-     * @return \yii\grid\DataColumn
-     * @throws \yii\base\InvalidConfigException
+     * @return DataColumn
+     * @throws InvalidConfigException
      */
-    protected function createDataColumn($text)
+    protected function createDataColumn($text): DataColumn
     {
         if (!preg_match('/^([^:]+)(:(\w*))?(:(.*))?$/', $text, $matches)) {
-            throw new InvalidConfigException('The column must be specified in the format of "attribute", "attribute:format" or "attribute:format:label"');
+            throw new InvalidConfigException('The column must be specified in the format of "attribute",' .
+                ' "attribute:format" or "attribute:format:label"');
         }
 
         return $this->createDataColumnObject([
             'grid'      => $this,
             'attribute' => $matches[1],
-            'format'    => isset($matches[3]) ? $matches[3] : 'text',
-            'label'     => isset($matches[5]) ? $matches[5] : null,
+            'format'    => $matches[3] ?? 'text',
+            'label'     => $matches[5] ?? null,
         ]);
     }
 
     /**
      * @param array $config
      *
-     * @return \yii\grid\DataColumn
+     * @return DataColumn
      */
-    protected function createDataColumnObject($config = [])
+    protected function createDataColumnObject(array $config = []): DataColumn
     {
         $class = $config['class'] ?? null;
         unset($config['class']);
 
-        $column = new class($config) extends DataColumn
+        $column = new class ($config) extends DataColumn
         {
             public function renderDataCell($model, $key, $index)
             {
