@@ -50,33 +50,46 @@ class MoneyHelper
      *
      * @return string
      */
-    public static function chineseAmount($amount)
+    public static function amountHuman($amount): string
     {
-        static $cnums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'],
-        $cnyunits = ['圆', '角', '分'],
-        $grees = ['拾', '佰', '仟', '万', '拾', '佰', '仟', '亿'];
-        list($ns1, $ns2) = explode('.', number_format($amount, 2, '.', ''), 2);
-        $ns2 = array_filter([$ns2[1], $ns2[0]]);
-        $ret = array_merge($ns2, [implode('', self::cnyMapUnit(str_split($ns1), $grees)), '']);
-        $ret = implode('', array_reverse(self::cnyMapUnit($ret, $cnyunits)));
-
-        return str_replace(['零零零', '零零'], ['零', '零'], str_replace(array_keys($cnums), $cnums, $ret));
-    }
-
-    private static function cnyMapUnit($list, $units)
-    {
-        $ul = count($units);
-        $xs = [];
-        foreach (array_reverse($list) as $x) {
-            $l = count($xs);
-            if ($x != '0' || !($l % 4)) {
-                $n = ($x == '0' ? '' : $x) . (@$units[($l - 1) % $ul]);
-            } else {
-                $n = is_numeric(@$xs[0][0]) ? $x : '';
-            }
-            array_unshift($xs, $n);
+        list($integer, $float) = explode('.', $amount, 2) + [1 => null];
+        $integerLen = strlen($integer) - 1;
+        $numHuman   = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+        $unit       = ['', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿', '拾', '佰', '仟', '万', '拾', '佰', '仟'];
+        $data       = '';
+        for ($i = $integerLen; $i >= 0; $i--) {
+            $data = $numHuman[$integer[$i]] . $unit[$integerLen - $i] . $data;
         }
 
-        return $xs;
+        $data = preg_replace_callback('/(零(万|亿|$))+/', function ($match) {
+                return substr($match[0], 3, 3);
+            }, strtr(preg_replace('/(零(拾|佰|仟))+/', '零', $data), ['零零' => '零'])) . '圆';
+
+        if (empty($float)) {
+            $data .= '整';
+        } else {
+            $dime = $float[0] ?? 0;
+            $cent = $float[1] ?? 0;
+            if ($dime) {
+                $data .= $numHuman[$dime] . '角';
+            }
+            if ($cent) {
+                $data .= ($dime ? '' : '零') . $numHuman[$cent] . '分';
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param float|int $amount
+     *
+     * @return string
+     * @deprecated
+     * @uses \xlerr\common\helpers\MoneyHelper::amountHuman()
+     */
+    public static function chineseAmount($amount): string
+    {
+        return self::amountHuman($amount);
     }
 }

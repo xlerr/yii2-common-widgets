@@ -41,7 +41,7 @@ class FormatterBehavior extends Behavior
      */
     public function asChineseAmount($amount)
     {
-        return MoneyHelper::chineseAmount($amount);
+        return MoneyHelper::amountHuman($amount);
     }
 
     /**
